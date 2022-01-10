@@ -16,12 +16,14 @@ const typeDefs = gql`
   }
   type Query {
     notes: [Note!]!,
+    note(id: ID!): Note!,
   }
 `;
 
 const resolvers = {
   Query: {
     notes: () => mockNotesData,
+    note: (parent, args) => mockNotesData.find((note) => note.id === args.id),
   },
 };
 
