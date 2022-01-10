@@ -1,10 +1,16 @@
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
+
+require('dotenv').config();
+const db = require('./db');
 const mockNotesData = require('./mock/notes');
 
 // Express App
 const app = express();
 const port = process.env.port || 4000;
+const DB_HOST = process.env.DB_HOST;
+
+db.connect(DB_HOST);
 
 // Scheme
 const typeDefs = gql`
