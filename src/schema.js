@@ -7,11 +7,12 @@ module.exports = gql`
   scalar DateTime
   # Описание типа для пользователей
   type User {
-    id: ID!,
-    username: String!,
-    email: String!,
-    avatar: String,
-    notes: [Note!]!,
+    id: ID!
+    username: String!
+    email: String!
+    avatar: String
+    notes: [Note!]!
+    favoriteNotes: [Note!]!
   }
   # Описание типа для основной сущности приложения - заметки 
   type Note {
