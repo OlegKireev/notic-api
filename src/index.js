@@ -33,7 +33,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     notes: async () => await models.Note.find(),
-    note: (parent, args) => mockNotesData.find((note) => note.id === args.id),
+    note: async (parent, args) => await models.Note.findById(args.id),
   },
   Mutation: {
     createNote: async (parent, args) => {
