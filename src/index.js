@@ -13,6 +13,7 @@ const models = require('./models');
 const typeDefs = require('./schema');
 // Импорт резолверов GraphQL для получения данных из БД
 const resolvers = require('./resolvers');
+const getUserByToken = require('./util/user').getUserByToken;
 
 // Устанавливаем рабочий порт приложения
 const port = process.env.port || 4000;
@@ -29,10 +30,17 @@ db.connect(DB_HOST);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: () => ({
+  context: ({ req }) => {
+    // Получаем jwt-токен из заголовков запроса
+    const token = req.headers.authorization;
+    // Получаем объект пользователя по токену
+    const user = getUserByToken(token);
+    console.log(user);
+    return {
     // Передаем модели БД в контекст для доступа в Queries и Mutations
     models,
-  })
+    user,
+  }}
 });
 // Подключаем к Apollo GraphQL серверу Express-приложение в качестве middleware и указываем путь к api
 server.applyMiddleware({ app, path: '/api'})
