@@ -9,7 +9,7 @@
     "final": "nodemon final/index.js",
     "seed": "node final/util/seed/index.js",
     "lint": "eslint \"src/**/*.js\"",
-    "deploy": "git push heroku master"
+    "deploy": "git push && git push heroku master"
   },
   "repository": {
     "type": "git",
