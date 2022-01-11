@@ -40,6 +40,8 @@ module.exports = gql`
     createNote(content: String!): Note!
     updateNote(id: ID!, content: String!): Note!
     removeNote(id: ID!): Boolean!
+    toggleFavorite(id: ID!): Note!
+
 
     signUp(username: String!, email: String!, password: String!): String!
     signIn(username: String, email: String, password: String!): String!
