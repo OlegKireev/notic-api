@@ -9,6 +9,10 @@ const cors = require('cors');
 // Импорт Apollo - библиотека для расширения возожностей серверного приложения и передачи данных в виде GraphQL
 const { ApolloServer } = require('apollo-server-express');
 
+// Два пакета для ограничения чрезмерно объемных запросов
+const depthLimit = require('graphql-depth-limit');
+const { createComplexityLimitRule } = require('graphql-validation-complexity');
+
 // Импорт базы данных
 const db = require('./db');
 // Импорт моделей БД
@@ -37,6 +41,10 @@ db.connect(DB_HOST);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  validationRules: [
+    depthLimit(5),
+    createComplexityLimitRule(1000),
+  ],
   context: ({ req }) => {
     // Получаем jwt-токен из заголовков запроса
     const token = req.headers.authorization;
