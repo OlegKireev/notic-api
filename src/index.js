@@ -36,15 +36,11 @@ const resolvers = {
     note: (parent, args) => mockNotesData.find((note) => note.id === args.id),
   },
   Mutation: {
-    createNote: (parent, args) => {
-      const newNote = {
-        id: mockNotesData.length + 1,
-        author: 'Marat Netoshev',
+    createNote: async (parent, args) => {
+      return await models.Note.create({
+        author: 'Oleg Kireev',
         content: args.content,
-        date: Date.now().toString(),
-      };
-      mockNotesData.push(newNote);
-      return newNote;
+      });
     }
   },
 };
