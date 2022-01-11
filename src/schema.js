@@ -18,7 +18,7 @@ module.exports = gql`
     # ключ: тип значения (! - обязательное поле)
     id: ID!,
     content: String!
-    author: String!
+    author: User!
     createdAt: DateTime!
     updatedAt: DateTime!
   }
