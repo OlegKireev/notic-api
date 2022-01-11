@@ -45,7 +45,17 @@ module.exports = {
       return false;
     }
   },
-  updateNote: async (parent, { id, content }, { models }) => {
+  updateNote: async (parent, { id, content }, { models, user }) => {
+    // Если не пользователь, выбрасываем ошибку авторизации
+    if (!user) {
+      throw new AuthenticationError('You must be signed in to edit a note');
+    }
+    // Находим заметку по id
+    const note = models.Note.findById(id);
+    if (note && String(note.author) !== user.id) {
+      throw new ForbiddenError("You don't have permissions to edit the note");
+    }
+
     return await models.Note.findOneAndUpdate(
       {_id: id},
       {
