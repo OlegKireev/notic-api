@@ -2,9 +2,12 @@
 const bcrypt = require('bcrypt');
 // Импорт пакета для генерации json web token
 const jwt = require('jsonwebtoken');
+// Импорт утилит Apollo для обработки ошибок
+const {
+  AuthenticationError,
+} = require('apollo-server-express');
 // Подключение переменных окружения .env
 require('dotenv').config();
-
 // Импорт функции-генератора ссылки для аватара пользователя
 const gravatar = require('../util/gravatar');
 
@@ -50,10 +53,37 @@ module.exports = {
         password: hashed,
         avatar,
       });
+      // Возвращаем json web token
       return jwt.sign({id: user._id}, process.env.JWT_SECRET);
     } catch (err) {
       console.log(err);
       throw new Error('Error creating account');
     }
+  },
+  signIn: async (parent, {username, email, password}, { models }) => {
+    // Нормализация email
+    if (email) {
+      email = email.trim().toLowerCase();
+    }
+
+    // Ищем пользователя в БД по полям email или username
+    const user = await models.User.findOne({
+      $or: [{ email }, { username }]
+    });
+    
+    // Если пользователь не найден, выбрасываем ошибку аутентификации
+    if (!user) {
+      throw new AuthenticationError('Error singing in');
+    }
+
+    // Сравнение введенного пароля с паролем в БД
+    const valid = await bcrypt.compare(password, user.password);
+
+    if(!valid) {
+      throw new AuthenticationError('Error singing in');
+    }
+
+    // Возвращаем json web token
+    return jwt.sign({id: user._id}, process.env.JWT_SECRET);
   }
 };
