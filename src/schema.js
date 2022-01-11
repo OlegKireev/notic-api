@@ -28,6 +28,9 @@ module.exports = gql`
     notes: [Note!]!
     # ключ запроса(ключ аргумета: тип аргумента): тип возвращаемого значения
     note(id: ID!): Note!
+    me: User!
+    users: [User!]!
+    user(username: String!): User
   }
   # Описание типов для мутаций
   type Mutation {
