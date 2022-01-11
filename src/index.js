@@ -63,4 +63,7 @@ server.applyMiddleware({ app, path: '/api'})
 // Обработка GET-запроса к корню сайта и возвращение 'Hello World' сообщения
 app.get('/', (req, res) => res.send('Hello Express'));
 // Вывод в консоль сообщения о старте сервера
+app.listen(app.get('port'), function() {
+  console.log('App is running, server is listening on port ', app.get('port'));
+});
 app.listen(port, () => console.log(`GraphQL Server running at http://localhost:${port}${server.graphqlPath}`))
