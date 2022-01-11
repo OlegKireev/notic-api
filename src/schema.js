@@ -5,6 +5,14 @@ const { gql } = require('apollo-server-express');
 module.exports = gql`
   # Создание пользовательского скалярного типа данных для дат 
   scalar DateTime
+  # Описание типа для пользователей
+  type User {
+    id: ID!,
+    username: String!,
+    email: String!,
+    avatar: String,
+    notes: [Note!]!,
+  }
   # Описание типа для основной сущности приложения - заметки 
   type Note {
     # ключ: тип значения (! - обязательное поле)
