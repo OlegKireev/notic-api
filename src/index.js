@@ -4,7 +4,6 @@ const { ApolloServer, gql } = require('apollo-server-express');
 require('dotenv').config();
 const db = require('./db');
 const models = require('./models');
-const mockNotesData = require('./mock/notes');
 
 // Express App
 const app = express();
