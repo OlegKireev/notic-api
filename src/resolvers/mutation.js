@@ -66,6 +66,46 @@ module.exports = {
       {new: true},
     );
   },
+  toggleFavorite: async (parent, { id }, { models, user }) => {
+    // Если не пользователь, выбрасываем ошибку авторизации
+    if (!user) {
+      throw new AuthenticationError('You must be signed in to make favorite a note');
+    }
+
+    const note = await models.Note.findById(id);
+    // Проверка отмечал ли пользователь выбранную заметку
+    const isNoteAlreadyFavorited = note.favoritedBy.indexOf(user.id) >= 0;
+
+    // Если пользователь есть в списке, удаляем его оттуда и уменьшаем значение // favoriteCount на 1
+    if (isNoteAlreadyFavorited) {
+      return await models.Note.findByIdAndUpdate(
+        id,
+        {
+          $pull: {
+            favoritedBy: mongoose.Types.ObjectId(user.id),
+          },
+          $inc: {
+            favoriteCount: -1
+          },
+        },
+        // Возвращаем обновленный документ
+        {new: true}
+      );
+    } else {
+      return await models.Note.findByIdAndUpdate(
+        id,
+        {
+          $push: {
+            favoritedBy: mongoose.Types.ObjectId(user.id),
+          },
+          $inc: {
+            favoriteCount: 1,
+          }
+        },
+        {new: true},
+      )
+    }
+  },
   signUp: async (parent, { username, email, password }, { models }) => {
     // Нормализация email
     email = email.trim().toLowerCase();
