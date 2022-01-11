@@ -25,12 +25,18 @@ module.exports = gql`
     createdAt: DateTime!
     updatedAt: DateTime!
   }
+  type NoteFeed {
+    notes: [Note]!,
+    cursor: String!,
+    hasNextPage: Boolean!,
+  }
   # Описание типов для запросов
   type Query {
     # ключ запроса: тип возвращаемого значения (здесь: обязательный массив объектов Note)
     notes: [Note!]!
     # ключ запроса(ключ аргумета: тип аргумента): тип возвращаемого значения
     note(id: ID!): Note!
+    noteFeed(cursor: String, limit: Int): NoteFeed,
     me: User!
     users: [User!]!
     user(username: String!): User
