@@ -1,3 +1,5 @@
+// Импорт mongoose - библиотка для работы с MongoDB
+const mongoose = require('mongoose');
 // Импорт пакета для шифрования паролей
 const bcrypt = require('bcrypt');
 // Импорт пакета для генерации json web token
@@ -13,9 +15,14 @@ const gravatar = require('../util/gravatar');
 
 
 module.exports = {
-  createNote: async (parent, args, { models }) => {
+  createNote: async (parent, args, { models, user }) => {
+    // Если в контексте нет пользователя, выбрасываем AuthenticationError
+    if (!user) {
+      throw new AuthenticationError('You must be signed in to create a note');
+    }
     return await models.Note.create({
-      author: 'Oleg Kireev',
+      // Ссылаемся на mongo id автора
+      author: mongoose.Types.ObjectId(user.id),
       content: args.content,
     });
   },
