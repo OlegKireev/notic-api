@@ -3,6 +3,7 @@ const { ApolloServer, gql } = require('apollo-server-express');
 
 require('dotenv').config();
 const db = require('./db');
+const models = require('./models');
 const mockNotesData = require('./mock/notes');
 
 // Express App
@@ -31,7 +32,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    notes: () => mockNotesData,
+    notes: async () => await models.Note.find(),
     note: (parent, args) => mockNotesData.find((note) => note.id === args.id),
   },
   Mutation: {
