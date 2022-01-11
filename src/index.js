@@ -1,7 +1,11 @@
 // Импортируем переменные окружения .env
 require('dotenv').config();
 // Импорт express - Фреймворк для создания NodeJS серверного приложения
-const  express = require('express');
+const express = require('express');
+// Пакет настройки http заголовков Express-приложения для повышения безопасности
+const helmet = require('helmet');
+// Пакет для активации кросс-доменных запросов
+const cors = require('cors');
 // Импорт Apollo - библиотека для расширения возожностей серверного приложения и передачи данных в виде GraphQL
 const { ApolloServer } = require('apollo-server-express');
 
@@ -22,6 +26,9 @@ const DB_HOST = process.env.DB_HOST;
 
 // Создаем express-серверное приложение
 const app = express();
+// Подключаем middlewares к приложению
+app.use(helmet());
+app.use(cors());
 
 // Подключаемся к БД
 db.connect(DB_HOST);
