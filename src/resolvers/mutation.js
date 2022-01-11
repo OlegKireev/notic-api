@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 // Импорт утилит Apollo для обработки ошибок
 const {
   AuthenticationError,
+  ForbiddenError,
 } = require('apollo-server-express');
 // Подключение переменных окружения .env
 require('dotenv').config();
@@ -26,9 +27,19 @@ module.exports = {
       content: args.content,
     });
   },
-  removeNote: async (parent, { id }, { models }) => {
+  removeNote: async (parent, { id }, { models, user }) => {
+    // Если в контексте нет пользователя, выбрасываем AuthenticationError
+    if (!user) {
+      throw new AuthenticationError('You must be signed in to delete a note');
+    }
+    // Находим заметку по id
+    const note = models.Note.findById(id);
+    if (note && String(note.author) !== user.id) {
+      throw new ForbiddenError("You don't have permissions to delete the note");
+    }
+
     try {
-      await models.Note.findOneAndRemove({_id: id});
+      await note.remove();
       return true;
     } catch (err) {
       return false;
