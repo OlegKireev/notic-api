@@ -19,6 +19,8 @@ module.exports = gql`
     id: ID!,
     content: String!
     author: User!
+    favoriteCount: Int!
+    favoritedBy: [User!]
     createdAt: DateTime!
     updatedAt: DateTime!
   }
