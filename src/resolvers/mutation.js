@@ -51,7 +51,7 @@ module.exports = {
       throw new AuthenticationError('You must be signed in to edit a note');
     }
     // Находим заметку по id
-    const note = models.Note.findById(id);
+    const note = await models.Note.findById(id);
     if (note && String(note.author) !== user.id) {
       throw new ForbiddenError("You don't have permissions to edit the note");
     }
