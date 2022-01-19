@@ -50,7 +50,6 @@ const server = new ApolloServer({
     const token = req.headers.authorization;
     // Получаем объект пользователя по токену
     const user = getUserByToken(token);
-    console.log(user);
     return {
     // Передаем модели БД в контекст для доступа в Queries и Mutations
     models,
