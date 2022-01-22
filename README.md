@@ -1,4 +1,4 @@
-# Notedly API
+# Notic API
 Backend API created with NodeJS for managing notes app.
 ## Technologies Stack:
 
