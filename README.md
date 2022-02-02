@@ -1,11 +1,10 @@
-# Notic API
-Backend API created with NodeJS for managing notes app.
+# "Notic" API
+Backend API created with NodeJS for managing a notes app.
 
 ## Deployed app
 You could show a final web app version [here](https://notic.netlify.app/)
 
 ## Technologies Stack:
-
 - [NodeJS](https://nodejs.org/) ([Express](https://expressjs.com/))
 - [MongoDB](https://www.mongodb.com/) ([mongoose](https://mongoosejs.com/))
 - [GraphQL](https://graphql.org/) ([Apollo](https://www.apollographql.com/))
